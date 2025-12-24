@@ -1,0 +1,16 @@
+import jwt from "jsonwebtoken";
+import { v4 as uuidv4 } from "uuid";
+import { ENV } from "../config/env.validation";
+import { AccessTokenPayload, RefreshTokenPayload } from "../interfaces/user-payload.interface";
+
+export function generateAccessToken(userId: string, username: string) {
+  const payload: AccessTokenPayload = { sub: userId, username };
+  return jwt.sign(payload, ENV.JWT_SECRET, { expiresIn: ENV.JWT_TOKEN_EXPIRESIN });
+}
+
+export function generateRefreshToken(userId: string) {
+  const jti = uuidv4();
+  const payload: RefreshTokenPayload = { sub: userId, jti };
+  const token = jwt.sign(payload, ENV.JWT_SECRET!, { expiresIn: ENV.JWT_REFRESH_TOKEN_EXPIRESIN });
+  return { token, jti };
+}
