@@ -10,7 +10,7 @@ export const userRouter = (userController: UserController) => {
   const router = Router();
 
   router.route("/")
-    .get(userController.getAllUsers.bind(userController))
+    .get(requireAuth, requireRole(["admin", "superadmin"]), userController.getAllUsers.bind(userController))
     
   router.route("/me")
     .put(requireAuth, validateBody(updateUserSchema) ,userController.updateMe.bind(userController))

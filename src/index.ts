@@ -14,6 +14,9 @@ import { AuthController } from "./controllers/auth.controller";
 import { authRouter } from "./routes/auth.routes";
 import { userRouter } from "./routes/user.routes";
 import { UserController } from "./controllers/user.controller";
+import { GenreService } from "./services/genre.service";
+import { GenreController } from "./controllers/genre.controller";
+import { genreRouter } from "./routes/genre.routes";
 
 const app = express();
 app.use(cors({
@@ -28,13 +31,16 @@ app.use(express.urlencoded({ extended: true }));
 
 const userService = new UserService(); 
 const redisService = new RedisService(); 
-const authService = new AuthService(userService, redisService); 
+const authService = new AuthService(userService, redisService);
+const genreService = new GenreService();
 const authController = new AuthController(authService);
 const userController = new UserController(userService);
+const genreController = new GenreController(genreService)
 
 // rotas
 app.use("/api/v1/auth", authRouter(authController));
 app.use("/api/v1/users", userRouter(userController));
+app.use("/api/v1/genres", genreRouter(genreController));
 
 // erros
 app.use(errorHandler);
@@ -44,7 +50,7 @@ mongoose.connect(ENV.MONGO_URI)
   .catch(err => console.error(err));
 
 app.get("/", (req, res) => {
-  res.send("FlexCommerce API rodando");
+  res.send("Movies API rodando");
 });
 
 app.listen(ENV.PORT, () => {

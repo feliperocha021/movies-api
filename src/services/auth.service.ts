@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { generateAccessToken, generateRefreshToken } from "../utils/jwt";
-import { UnauthorizedError } from "../errors/error";
+import { BadRequestError, UnauthorizedError } from "../errors/error";
 import { UserService } from "./user.service";
 import { AccessTokenPayload, RefreshTokenPayload } from "../interfaces/user-payload.interface";
 import { RedisService } from "./redis.service";
@@ -17,7 +17,7 @@ export class AuthService {
     const hashed = await bcrypt.hash(password, salt);
     const user = await this.userService.createUser(username, email, hashed);
 
-    const accessToken = generateAccessToken(user._id.toString(), user.username);
+    const accessToken = generateAccessToken(user._id.toString(), user.username, user.role);
     const { token: refreshToken, jti } = generateRefreshToken(user._id.toString());
     
     await this.redisService.addJti(user._id.toString(), jti, ENV.JWT_REFRESH_TOKEN_EXPIRESIN);
@@ -34,7 +34,7 @@ export class AuthService {
 
     await this.redisService.cleanupExpiredJtis(user._id.toString());
 
-    const accessToken = generateAccessToken(user._id.toString(), user.username);
+    const accessToken = generateAccessToken(user._id.toString(), user.username, user.role);
     const { token: refreshToken, jti } = generateRefreshToken(user._id.toString());
 
     await this.redisService.addJti(user._id.toString(), jti, ENV.JWT_REFRESH_TOKEN_EXPIRESIN);
@@ -48,7 +48,7 @@ export class AuthService {
 
     const user = await this.userService.findById(refreshPayload.sub);
 
-    const accessToken = generateAccessToken(refreshPayload.sub, user.username);
+    const accessToken = generateAccessToken(refreshPayload.sub, user.username, user.role);
     const { token: refreshToken, jti } = generateRefreshToken(refreshPayload.sub);
 
     await this.redisService.addJti(user._id.toString(), jti, ENV.JWT_REFRESH_TOKEN_EXPIRESIN);
@@ -73,14 +73,14 @@ export class AuthService {
     const hashed = await bcrypt.hash(newPassword, 10);
     const match = await bcrypt.compare(currentPassword, user.password);
 
-    if (!match) throw new UnauthorizedError("Email e/ou senha inválido(s)");
+    if (!match) throw new BadRequestError("Senha Atual Inválida");
 
     user.password = hashed;
     await user.save();
 
     await this.redisService.clearAllJtis(userId);
 
-    const accessToken = generateAccessToken(user._id.toString(), user.username);
+    const accessToken = generateAccessToken(user._id.toString(), user.username, user.role);
     const { token: refreshToken, jti } = generateRefreshToken(user._id.toString());
     await this.redisService.addJti(user._id.toString(), jti, ENV.JWT_REFRESH_TOKEN_EXPIRESIN);  
 

@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 import { ENV } from "../config/env.validation";
 import { AccessTokenPayload, RefreshTokenPayload } from "../interfaces/user-payload.interface";
 
-export function generateAccessToken(userId: string, username: string) {
-  const payload: AccessTokenPayload = { sub: userId, username };
+export function generateAccessToken(userId: string, username: string, role: "user" | "admin" | "superadmin") {
+  const payload: AccessTokenPayload = { sub: userId, username, role };
   return jwt.sign(payload, ENV.JWT_SECRET, { expiresIn: ENV.JWT_TOKEN_EXPIRESIN });
 }
 

@@ -1,16 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 import { UserService } from "../services/user.service";
 import { toUserDTO } from "../mappers/user.mapper";
-import { success } from "zod";
 import { AccessTokenPayload } from "../interfaces/user-payload.interface";
 
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   async getAllUsers(req: Request, res: Response, next: NextFunction) {
-    const users = await this.userService.getAllUsers();
-    const formatedUsers = users.map((user) => toUserDTO(user));
     try {
+      const users = await this.userService.getAllUsers();
+      const formatedUsers = users.map((user) => toUserDTO(user));
       return res.status(200).json({
         success: true,
         message: "Usuários encontrados com sucesso",
