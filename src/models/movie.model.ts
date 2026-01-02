@@ -8,7 +8,7 @@ export interface IMovie {
   year: number;
   details: string;
   cast: string[];
-  reviews: IReviewDocument[];
+  reviews: Types.DocumentArray<IReviewDocument>;
   numReviews: number;
   genre: Types.ObjectId | IGenreDocument;
 }

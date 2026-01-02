@@ -1,4 +1,3 @@
-import { success } from "zod";
 import { ConflictError, NotFoundError } from "../errors/error";
 import { Genre } from "../models/genre.model";
 

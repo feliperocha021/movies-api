@@ -1,5 +1,5 @@
 import type { IUserDocument } from "../models/user.model";
-import { UserDTO } from "../dtos/user.dto";
+import { UserDTO } from "../dtos/response/user.dto";
 
 export function toUserDTO(user: IUserDocument): UserDTO {
   return {

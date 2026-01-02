@@ -17,6 +17,9 @@ import { UserController } from "./controllers/user.controller";
 import { GenreService } from "./services/genre.service";
 import { GenreController } from "./controllers/genre.controller";
 import { genreRouter } from "./routes/genre.routes";
+import { movieRouter } from "./routes/movie.route";
+import { MovieController } from "./controllers/movie.controller";
+import { MovieService } from "./services/movie.service";
 
 const app = express();
 app.use(cors({
@@ -33,14 +36,17 @@ const userService = new UserService();
 const redisService = new RedisService(); 
 const authService = new AuthService(userService, redisService);
 const genreService = new GenreService();
+const movieService = new MovieService();
 const authController = new AuthController(authService);
 const userController = new UserController(userService);
-const genreController = new GenreController(genreService)
+const genreController = new GenreController(genreService);
+const movieController = new MovieController(movieService);
 
 // rotas
 app.use("/api/v1/auth", authRouter(authController));
 app.use("/api/v1/users", userRouter(userController));
 app.use("/api/v1/genres", genreRouter(genreController));
+app.use("/api/v1/movies", movieRouter(movieController));
 
 // erros
 app.use(errorHandler);
