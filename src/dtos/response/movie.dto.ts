@@ -1,6 +1,4 @@
-import { Types } from "mongoose";
-import { IReviewDocument } from "../../models/review.model";
-import { IGenreDocument } from "../../models/genre.model";
+import { ReviewDTO } from "./review.dto.js";
 
 export interface MovieDTO {
   id: string;
@@ -9,7 +7,7 @@ export interface MovieDTO {
   year: number;
   details: string;
   cast: string[];
-  reviews: IReviewDocument[];
+  reviews: ReviewDTO[];
   numReviews: number;
-  genre: Types.ObjectId | IGenreDocument;
+  genre: string;
 }

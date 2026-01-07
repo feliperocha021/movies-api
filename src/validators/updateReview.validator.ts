@@ -1,5 +1,5 @@
 import z from "zod";
-import { objectIdSchema } from "./objectId.validator";
+import { objectIdSchema } from "./objectId.validator.js";
 
 export const updateReviewSchema = z.object({
   name: z.string().optional(),

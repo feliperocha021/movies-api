@@ -1,5 +1,5 @@
 import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
-import { ENV } from "../config/env.validation";
+import { ENV } from "../config/env.validation.js";
 
 export const accessStrategy = new JwtStrategy(
   {

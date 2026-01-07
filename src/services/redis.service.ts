@@ -1,4 +1,4 @@
-import { redisClient } from "../config/redis";
+import { redisClient } from "../config/redis.js";
 
 export class RedisService {
   private static readonly JTI_KEY_PREFIX = "jti";

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import passport from "passport";
-import { AccessTokenPayload, RefreshTokenPayload } from "../interfaces/user-payload.interface";
+import { AccessTokenPayload, RefreshTokenPayload } from "../interfaces/user-payload.interface.js";
 
 export const requireAuth = (req: Request, res: Response, next: NextFunction) => {
   passport.authenticate("jwt-access", { session: false }, 

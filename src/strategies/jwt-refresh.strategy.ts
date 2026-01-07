@@ -1,7 +1,7 @@
 import { ExtractJwt, Strategy as JwtStrategy } from "passport-jwt";
 import { Request } from "express";
-import { User } from "../models/user.model";
-import { ENV } from "../config/env.validation";
+import { User } from "../models/user.model.js";
+import { ENV } from "../config/env.validation.js";
 
 function cookieExtractor(req: Request) {
   return req?.cookies?.refreshToken || null;

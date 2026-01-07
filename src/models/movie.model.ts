@@ -1,6 +1,6 @@
 import { Document, model, Schema, Types } from "mongoose";
-import { IGenreDocument } from "./genre.model";
-import { IReviewDocument, reviewSchema } from "./review.model";
+import { IGenreDocument } from "./genre.model.js";
+import { IReviewDocument, reviewSchema } from "./review.model.js";
 
 export interface IMovie {
   name: string;

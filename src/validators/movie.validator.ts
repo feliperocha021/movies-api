@@ -1,19 +1,15 @@
 import z from "zod";
-import { createReviewSchema } from "./review.validator";
-import { objectIdSchema } from "./objectId.validator";
+import { createReviewSchema } from "./review.validator.js";
+import { objectIdSchema } from "./objectId.validator.js";
 
 export const createMovieSchema = z.object({
   name: z.string({ error: "Name is required" }),
   image: z.string().refine(
-    (val) => {
-      try {
-        new URL(val);
-        return true;
-      } catch {
-        return false;
-      }
-    },
-    { error: "Invalid URL" }
+    (val) =>
+      /^https?:\/\/.+\.(png|jpg|jpeg|gif)$/i.test(val) ||
+      val.startsWith("/") ||
+      val.startsWith("./"),
+    { message: "Invalid image path or URL" }
   ).optional(),
   year: z.number().int({ error: "Year must be an integer" }),
   details: z.string("Details are required"),

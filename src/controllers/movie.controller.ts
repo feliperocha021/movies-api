@@ -1,9 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { MovieService } from "../services/movie.service";
-import { MovieRequestDTO } from "../dtos/request/movie.dto";
-import { toMovieDTO } from "../mappers/movie.mapper";
-import { ReviewDTO } from "../dtos/request/review.dto";
-import { AccessTokenPayload } from "../interfaces/user-payload.interface";
+import { MovieService } from "../services/movie.service.js";
+import { toMovieDTO } from "../mappers/movie.mapper.js";
+import { ReviewDTO } from "../dtos/request/review.dto.js";
+import { AccessTokenPayload } from "../interfaces/user-payload.interface.js";
+import { toReviewDTO } from "../mappers/review.mapper.js";
+import { MovieRequestDTO } from "../dtos/request/movie.dto.js";
 
 export class MovieController {
   constructor(private readonly movieService: MovieService) {}
@@ -17,7 +18,7 @@ export class MovieController {
         success: true,
         message: "Movies found successfully",
         data: {
-          genres: formatedMovies,
+          movies: formatedMovies,
         },
       });
     } catch (err) {
@@ -99,15 +100,16 @@ export class MovieController {
       const { id: movieId } = req.params;
       const userId = (req.user as AccessTokenPayload).sub;
       const data = req.body;
+      data.name = (req.user as AccessTokenPayload).username
       const movie = await this.movieService.createMovieReview(movieId, userId, data);
-      const formatedMovie = toMovieDTO(movie);
-      const userReview = formatedMovie.reviews.find(r => r.user.toString() === userId);
+      const review = movie.reviews.find(r => r.user.toString() === userId);
+      const formatedReview = review ? toReviewDTO(review) : null;
 
       return res.status(201).json({
         success: true,
         message: "Review created successfully",
         data: {
-          review: userReview,
+          review: formatedReview,
         },
       });
     } catch (err) {
@@ -121,14 +123,14 @@ export class MovieController {
       const userId = (req.user as AccessTokenPayload).sub;
       const data = req.body;
       const movie = await this.movieService.updateMovieReview(movieId, userId, data);
-      const formatedMovie = toMovieDTO(movie);
-      const userReview = formatedMovie.reviews.find(r => r.user.toString() === userId);
+      const review = movie.reviews.find(r  => r.user.toString() === userId);
+      const formatedReview = review ? toReviewDTO(review) : null;
 
       return res.status(200).json({
         success: true,
         message: "Review updated successfully",
         data: {
-          review: userReview,
+          review: formatedReview,
         },
       });
     } catch (err) {
@@ -136,11 +138,10 @@ export class MovieController {
     }
   }
 
-  async deleteMovieReview (req: Request<{id: string}, {}, ReviewDTO>, res: Response, next: NextFunction) {
+  async deleteMovieReview (req: Request<{movieId: string, reviewId: string}, {}, {}>, res: Response, next: NextFunction) {
     try {
-      const { id: movieId } = req.params;
-      const data  = req.body;
-      const movie = await this.movieService.deleteMovieReview(movieId, data.id);
+      const { movieId, reviewId } = req.params;
+      const movie = await this.movieService.deleteMovieReview(movieId, reviewId);
       const formatedMovie = toMovieDTO(movie);
       const reviews = formatedMovie.reviews;
 
@@ -149,6 +150,57 @@ export class MovieController {
         message: "Review deleted successfully",
         data: {
           reviews,
+        },
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getNewMovies(req: Request, res: Response, next: NextFunction) {
+    try {
+      const movies = await this.movieService.getNewMovies();
+      const formatedMovies = movies.map((movie) => toMovieDTO(movie));
+
+      return res.status(200).json({
+        success: true,
+        message: "New movies found successfully",
+        data: {
+          movies: formatedMovies,
+        },
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getTopMovies(req: Request, res: Response, next: NextFunction) {
+    try {
+      const movies = await this.movieService.getTopMovies();
+      const formatedMovies = movies.map((movie) => toMovieDTO(movie));
+
+      return res.status(200).json({
+        success: true,
+        message: "Top movies found successfully",
+        data: {
+          movies: formatedMovies,
+        },
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async getRandomMovies(req: Request, res: Response, next: NextFunction) {
+    try {
+      const movies = await this.movieService.getRandomMovies();
+      const formatedMovies = movies.map((movie) => toMovieDTO(movie));
+
+      return res.status(200).json({
+        success: true,
+        message: "Radom movies found successfully",
+        data: {
+          movies: formatedMovies,
         },
       });
     } catch (err) {

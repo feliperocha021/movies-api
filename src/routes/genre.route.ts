@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { GenreController } from "../controllers/genre.controller";
-import { requireAuth } from "../middlewares/auth.middlewares";
-import { requireRole } from "../middlewares/requireRole.middleware";
-import { validateBody } from "../middlewares/validate.middleware";
-import { genreSchema } from "../validators/genre.validator";
+import { GenreController } from "../controllers/genre.controller.js";
+import { requireAuth } from "../middlewares/auth.middlewares.js";
+import { requireRole } from "../middlewares/requireRole.middleware.js";
+import { validateBody } from "../middlewares/validate.middleware.js";
+import { genreSchema } from "../validators/genre.validator.js";
 
 export const genreRouter = (genreController: GenreController) => {
   const router = Router();

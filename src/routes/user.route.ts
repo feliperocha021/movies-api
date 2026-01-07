@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { UserController } from "../controllers/user.controller";
-import { requireAuth } from "../middlewares/auth.middlewares";
-import { validateBody } from "../middlewares/validate.middleware";
-import { updateUserSchema } from "../validators/updateUser.validator";
-import { requireRole} from "../middlewares/requireRole.middleware";
-import { updateRoleSchema } from "../validators/updateRole.validator";
+import { UserController } from "../controllers/user.controller.js";
+import { requireAuth } from "../middlewares/auth.middlewares.js";
+import { validateBody } from "../middlewares/validate.middleware.js";
+import { updateUserSchema } from "../validators/updateUser.validator.js";
+import { requireRole} from "../middlewares/requireRole.middleware.js";
+import { updateRoleSchema } from "../validators/updateRole.validator.js";
 
 export const userRouter = (userController: UserController) => {
   const router = Router();

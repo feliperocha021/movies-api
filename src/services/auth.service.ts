@@ -1,10 +1,10 @@
 import bcrypt from "bcrypt";
-import { generateAccessToken, generateRefreshToken } from "../utils/jwt";
-import { BadRequestError, UnauthorizedError } from "../errors/error";
-import { UserService } from "./user.service";
-import { AccessTokenPayload, RefreshTokenPayload } from "../interfaces/user-payload.interface";
-import { RedisService } from "./redis.service";
-import { ENV } from "../config/env.validation";
+import { generateAccessToken, generateRefreshToken } from "../utils/jwt.js";
+import { BadRequestError, UnauthorizedError } from "../errors/error.js";
+import { UserService } from "./user.service.js";
+import { AccessTokenPayload, RefreshTokenPayload } from "../interfaces/user-payload.interface.js";
+import { RedisService } from "./redis.service.js";
+import { ENV } from "../config/env.validation.js";
 
 export class AuthService {
   constructor(

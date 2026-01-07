@@ -1,5 +1,5 @@
-import { ConflictError, NotFoundError } from "../errors/error";
-import { Genre } from "../models/genre.model";
+import { ConflictError, NotFoundError } from "../errors/error.js";
+import { Genre } from "../models/genre.model.js";
 
 export class GenreService {
   async createGenre(name: string) {

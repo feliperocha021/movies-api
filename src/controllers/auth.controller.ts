@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { AuthService } from "../services/auth.service";
-import { cookieConfig } from "../config/cookie";
-import { AccessTokenPayload, RefreshTokenPayload } from "../interfaces/user-payload.interface";
-import { toUserDTO } from "../mappers/user.mapper";
-import { success } from "zod";
+import { AuthService } from "../services/auth.service.js";
+import { cookieConfig } from "../config/cookie.js";
+import { AccessTokenPayload, RefreshTokenPayload } from "../interfaces/user-payload.interface.js";
+import { toUserDTO } from "../mappers/user.mapper.js";
 
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -35,7 +34,7 @@ export class AuthController {
 
       res.cookie(cookieConfig.name, refreshToken, cookieConfig);
       res.setHeader("x-refresh-token", refreshToken);
-      return res.status(201).json({
+      return res.status(200).json({
         success: true,
         message: "Login realizado com sucesso",
         data: {

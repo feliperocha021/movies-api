@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { IUser } from "../models/user.model";
+import { IUser } from "../models/user.model.js";
 
 export const requireRole = (roles: Array<"user" | "admin" | "superadmin">) => {
   return (req: Request, res: Response, next: NextFunction) => {

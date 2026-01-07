@@ -1,5 +1,5 @@
 import { Document, model, Schema, Types } from "mongoose";
-import { IUserDocument } from "./user.model";
+import { IUserDocument } from "./user.model.js";
 
 export interface IReview {
   name: string;

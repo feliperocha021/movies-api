@@ -1,8 +1,7 @@
-import { Types } from "mongoose";
-import { MovieRequestDTO } from "../dtos/request/movie.dto";
-import { ReviewDTO } from "../dtos/request/review.dto";
-import { BadRequestError, NotFoundError } from "../errors/error";
-import { Movie } from "../models/movie.model";
+import { ReviewDTO } from "../dtos/request/review.dto.js";
+import { BadRequestError, NotFoundError } from "../errors/error.js";
+import { Movie } from "../models/movie.model.js";
+import { MovieRequestDTO } from "../dtos/request/movie.dto.js";
 
 export class MovieService {
   async getAllMovies() {
@@ -90,5 +89,17 @@ export class MovieService {
 
     await movie.save();
     return movie;
+  }
+
+  async getNewMovies() {
+    return await Movie.find().sort({ createdAt: -1 }).limit(10);
+  }
+
+  async getTopMovies() {
+    return await Movie.find().sort({ numReviews: -1 }).limit(10);
+  }
+
+  async getRandomMovies() {
+    return await Movie.aggregate([{$sample: {size: 10}}]);
   }
 } 

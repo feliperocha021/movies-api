@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { GenreService } from "../services/genre.service";
-import { toGenreDTO } from "../mappers/gender.mapper";
-import { success } from "zod";
+import { GenreService } from "../services/genre.service.js";
+import { toGenreDTO } from "../mappers/gender.mapper.js";
 
 export class GenreController {
   constructor( private readonly genreService: GenreService) {}

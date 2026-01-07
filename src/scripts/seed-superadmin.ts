@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import { User } from "../models/user.model";
-import { ENV } from "../config/env.validation";
+import { User } from "../models/user.model.js";
+import { ENV } from "../config/env.validation.js";
 
 (async () => {
   try {

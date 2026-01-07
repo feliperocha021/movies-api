@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { UserService } from "../services/user.service";
-import { toUserDTO } from "../mappers/user.mapper";
-import { AccessTokenPayload } from "../interfaces/user-payload.interface";
+import { UserService } from "../services/user.service.js";
+import { toUserDTO } from "../mappers/user.mapper.js";
+import { AccessTokenPayload } from "../interfaces/user-payload.interface.js";
 
 export class UserController {
   constructor(private readonly userService: UserService) {}

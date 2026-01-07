@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { v4 as uuidv4 } from "uuid";
-import { ENV } from "../config/env.validation";
-import { AccessTokenPayload, RefreshTokenPayload } from "../interfaces/user-payload.interface";
+import { ENV } from "../config/env.validation.js";
+import { AccessTokenPayload, RefreshTokenPayload } from "../interfaces/user-payload.interface.js";
 
 export function generateAccessToken(userId: string, username: string, role: "user" | "admin" | "superadmin") {
   const payload: AccessTokenPayload = { sub: userId, username, role };

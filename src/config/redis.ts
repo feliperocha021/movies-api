@@ -1,5 +1,5 @@
-import Redis from "ioredis";
-import { ENV } from "./env.validation";
+import { Redis } from "ioredis";
+import { ENV } from "./env.validation.js";
 
 export const redisClient = new Redis({
   host: ENV.REDIS_HOST,

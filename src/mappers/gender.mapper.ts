@@ -1,5 +1,5 @@
-import { GenreDTO } from "../dtos/response/gender.dto";
-import { IGenreDocument } from "../models/genre.model";
+import { GenreDTO } from "../dtos/response/gender.dto.js";
+import { IGenreDocument } from "../models/genre.model.js";
 
 export function toGenreDTO(genre: IGenreDocument): GenreDTO {
   return {

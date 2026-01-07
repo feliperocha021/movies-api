@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
-import { ConflictError, NotFoundError } from "../errors/error";
-import { User } from "../models/user.model";
+import { ConflictError, NotFoundError } from "../errors/error.js";
+import { User } from "../models/user.model.js";
 
 export class UserService {
   async createUser(username: string, email: string, password: string) {
