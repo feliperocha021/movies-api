@@ -34,7 +34,7 @@ export class MovieController {
 
       return res.status(201).json({
         success: true,
-        message: "Movies created successfully",
+        message: "Movie created successfully",
         data: {
           movie: formatedMovie,
         },

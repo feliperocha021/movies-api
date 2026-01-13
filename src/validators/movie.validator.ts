@@ -6,9 +6,8 @@ export const createMovieSchema = z.object({
   name: z.string({ error: "Name is required" }),
   image: z.string().refine(
     (val) =>
-      /^https?:\/\/.+\.(png|jpg|jpeg|gif)$/i.test(val) ||
-      val.startsWith("/") ||
-      val.startsWith("./"),
+      /^https?:\/\/.+\.(png|jpg|jpeg|gif|webp)$/i.test(val) || // URL completa
+      /^\/?.+\.(png|jpg|jpeg|gif|webp)$/i.test(val), // qualquer path terminando em extensão
     { message: "Invalid image path or URL" }
   ).optional(),
   year: z.number().int({ error: "Year must be an integer" }),

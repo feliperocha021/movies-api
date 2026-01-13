@@ -6,9 +6,8 @@ export const updateMovieSchema = z.object({
   name: z.string().min(1).optional(),
   image: z.string().refine(
     (val) =>
-      /^https?:\/\/.+\.(png|jpg|jpeg|gif)$/i.test(val) ||
-      val.startsWith("/") ||
-      val.startsWith("./"),
+      /^https?:\/\/.+\.(png|jpg|jpeg|gif|webp)$/i.test(val) ||
+      /^\/?.+\.(png|jpg|jpeg|gif|webp)$/i.test(val),
     { message: "Invalid image path or URL" }
   ).optional(),
   year: z.number().int().optional(),

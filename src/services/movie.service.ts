@@ -1,7 +1,11 @@
 import { ReviewDTO } from "../dtos/request/review.dto.js";
-import { BadRequestError, NotFoundError } from "../errors/error.js";
+import { BadRequestError, NotFoundError, ServerError } from "../errors/error.js";
 import { Movie } from "../models/movie.model.js";
 import { MovieRequestDTO } from "../dtos/request/movie.dto.js";
+
+import fs from "fs";
+import path from "path";
+import { Types } from "mongoose";
 
 export class MovieService {
   async getAllMovies() {
@@ -22,20 +26,45 @@ export class MovieService {
     const movie = await Movie.findById(movieId);
     if (!movie) throw new NotFoundError("Movie not found");
 
+    if (movie.image && movie.image !== data.image) {
+      const oldFileName = movie.image.split("/uploads/")[1];
+      if (oldFileName) {
+        try {
+          const oldPath = path.join(process.cwd(), "uploads",  oldFileName);
+          await fs.promises.unlink(oldPath);
+        } catch (err) {
+          console.error("Error removing image", err);
+        }
+      }
+    }
+
     movie.name = data.name;
     movie.year = data.year;
     movie.details = data.details;
     movie.image = data.image;
     movie.cast = data.cast;
+    movie.genre = new Types.ObjectId(data.genre);
 
     await movie.save();
     return movie;
   }
   
   async deleteMovie(movieId: string) {
-    const result = await Movie.deleteOne({ _id: movieId });
-    if (result.deletedCount === 0) throw new NotFoundError("Movie not found");
+    const movie = await Movie.findById(movieId);
+    if (!movie) throw new NotFoundError("Movie not found");
+    if (movie.image) {
+      const oldFileName = movie.image.split("/uploads/")[1];
+      if(oldFileName) {
+        try {
+          const oldPath = path.join(process.cwd(), "uploads", oldFileName);
+          await fs.promises.unlink(oldPath);
+        } catch (err) {
+          console.error("Error removing image");
+        }
+      }
+    }
 
+    await Movie.deleteOne({ _id: movieId });
     return true;
   }
 

@@ -8,6 +8,12 @@ export class AppError extends Error {
   }
 }
 
+export class ServerError extends AppError {
+  constructor(message = "Internal Server Error") {
+    super(message, 500);
+  }
+}
+
 // 400 - Bad Request
 export class BadRequestError extends AppError {
   constructor(message = "Requisição inválida") {
