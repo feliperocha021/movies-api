@@ -74,7 +74,7 @@ export class MovieService {
 
     const existingReview = movie.reviews.find(r => r.user.toString() === userId);
 
-    if (existingReview) throw new BadRequestError("This review not found");
+    if (existingReview) throw new BadRequestError("A review from you already exists. You can update it, but you cannot create a new one.");
 
     movie.reviews.push({
       name: data.name,
